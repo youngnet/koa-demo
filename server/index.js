@@ -18,15 +18,19 @@ const connection = mysql.createConnection({
 let data = null; 
 // 执行sql脚本对数据库进行读写 
 
-async ()=>{
+(async ()=>{
   data = await getData();
   console.log(data,'---data---')
+  app.use((ctx,next)=>{
+	ctx.request.data = data;
+	next();
+  })
   app.use(router.routes());
 
   app.listen(2333, () => {
     console.log('koa is listening on 2333');
   });
-}
+})()
 
 
 
