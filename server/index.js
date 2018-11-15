@@ -17,19 +17,27 @@ const connection = mysql.createConnection({
 
 let data = null; 
 // 执行sql脚本对数据库进行读写 
-connection.query('SELECT * from userinfo',  (error, results, fields) => {
-   if (error) throw error
-        // connected!        
-         // 结束会话
-   let d = results;
-   console.log(d,'---d---'); 
-   data = d;
-});
-connection.end();
 
-console.log(data,'---data---')
-app.use(router.routes());
+async ()=>{
+  data = await getData();
+  console.log(data,'---data---')
+  app.use(router.routes());
 
-app.listen(2333, () => {
-	console.log('koa is listening on 2333');
-});
+  app.listen(2333, () => {
+    console.log('koa is listening on 2333');
+  });
+}
+
+
+
+function getData(){
+  return new Promise((resolve,reject) => {
+    connection.query('SELECT * from userinfo',  (error, results, fields) => {
+      if (error) throw error
+      // connected!        
+      // 结束会话
+      resolve(results);
+   });
+   connection.end();
+  })
+}
