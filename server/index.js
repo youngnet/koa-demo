@@ -13,16 +13,21 @@ const connection = mysql.createConnection({
   password : 'centosmysql',   // 数据库密码
   database : 'demo'  // 选中数据库
 })
- 
+
+
+let data = null; 
 // 执行sql脚本对数据库进行读写 
 connection.query('SELECT * from userinfo',  (error, results, fields) => {
    if (error) throw error
         // connected!        
          // 结束会话
-    console.log(results); 
+   let d = results;
+   console.log(d,'---d---'); 
+   data = d;
 });
 connection.end();
 
+console.log(data,'---data---')
 app.use(router.routes());
 
 app.listen(2333, () => {
