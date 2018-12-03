@@ -1,8 +1,7 @@
 const router = require("koa-router")();
 
 router.post('/a',async (ctx, next) => {
-    console.log(ctx);
-    ctx.body = 'hello test'
+    ctx.body = 'test'
 })
 
 export default router;

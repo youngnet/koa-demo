@@ -2,6 +2,7 @@ const koa = require('koa');
 const path = require("path");
 const mysql = require("mysql");
 const koaSession = require("koa-session");
+const cors = require("koa-cors");
 
 import router from './router';
 const app = new koa();
@@ -20,22 +21,27 @@ const CONFIG = {
   renew: false, /** (boolean) renew session when session is nearly expired, so we can always keep user logged in. (default is false)*/
 };
 
-const connection = mysql.createConnection({
-  host     : '127.0.0.1',   // 数据库地址
-  user     : 'root',    // 数据库用户
-  password : 'centosmysql',   // 数据库密码
-  database : 'demo'  // 选中数据库
-})
+// const connection = mysql.createConnection({
+//   host     : '127.0.0.1',   // 数据库地址
+//   user     : 'root',    // 数据库用户
+//   password : 'centosmysql',   // 数据库密码
+//   database : 'demo'  // 选中数据库
+// })
 
 
 let data = null; 
 // 执行sql脚本对数据库进行读写 
+app.use(cors({
+  origin: (res) => {
+    return 'http://localhost:2000'
+  }
+}));
 app.use(koaSession(CONFIG, app));
 (async ()=>{
-  data = await getData();
-  console.log(data,'---data---')
+  // data = await getData();
+  // console.log(data,'---data---')
   app.use((ctx,next)=>{
-    ctx.request.data = data;
+    // ctx.request.data = data;
     next();
   })
   app.use(router.routes());
