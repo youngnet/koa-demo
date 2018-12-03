@@ -4,10 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const baseUrl = path.join(__dirname, '../../../react-demo/build');
 
-router.use((ctx, next) => {
-	console.log('​ctx -> ', ctx.request.url);
-	next();
-});
+
 
 router.redirect('/', '/home');
 
