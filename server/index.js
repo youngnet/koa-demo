@@ -45,6 +45,8 @@ var serverProto = {
 		});
 	},
 	use() {
+		app.use(bodyParser());
+
 		app.use((ctx, next) => {
 			console.log('requestUrl -> ' + ctx.request.url);
 			next();
@@ -62,7 +64,7 @@ var serverProto = {
 				}
 			})
 		);
-		app.use(bodyParser());
+
 		app.use(router.routes());
 		koaSession(this.sessionConfig, app);
 	},
