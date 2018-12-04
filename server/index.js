@@ -4,13 +4,11 @@ const mysql = require('mysql');
 const koaSession = require('koa-session');
 const cors = require('koa-cors');
 const os = require('os');
-const net = require('net');
-const { URL } = require('url');
-const util = require('util');
+const bodyParser = require('koa-bodyparser');
 
 import router from './router';
 const app = new koa();
-app.keys = [ 'some secret hurr' ];
+app.keys = [ 'youngnetkoa' ];
 
 const dns = require('dns');
 dns.lookup('iana.org', (err, address, family) => {
@@ -64,7 +62,7 @@ var serverProto = {
 				}
 			})
 		);
-
+		app.use(bodyParser());
 		app.use(router.routes());
 		koaSession(this.sessionConfig, app);
 	},
