@@ -4,8 +4,6 @@ const fs = require('fs');
 const path = require('path');
 const baseUrl = path.join(__dirname, '../../../react-demo/build');
 
-
-
 router.redirect('/', '/home');
 
 router.get('/home', async (ctx, next) => {
@@ -19,12 +17,17 @@ router.get('/favicon.ico', async (ctx, next) => {
 });
 
 router.get('/static/*', async (ctx, next) => {
-	let data = fs.readFileSync(`${baseUrl}${ctx.request.url}`, 'utf8');
+	let reg = /(\.bmp|\.gif|\.jpe?g|\.png)$/;
+	let data = fs.readFileSync(`${baseUrl}${ctx.request.url}`);
 	if (/\.js$/.test(ctx.request.url)) {
 		ctx.type = 'text/javascript';
 	}
 	if (/\.css$/.test(ctx.request.url)) {
 		ctx.type = 'text/css';
+	}
+	if (/(\.bmp|\.gif|\.jpe?g|\.png)$/.test(ctx.request.url)) {
+		let imgType = ctx.request.url.match(reg)[0].replace('.', '');
+		ctx.type = `image/${imgType}`;
 	}
 	ctx.body = data;
 });
